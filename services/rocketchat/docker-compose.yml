@@ -1,0 +1,55 @@
+# DOO Space - Rocket.Chat Messaging Service
+# 
+# Quick Start:
+#   cd services/rocketchat && docker compose up -d
+#
+# Access:
+#   http://localhost:3100 (Rocket.Chat)
+
+services:
+  rocketchat:
+    image: rocketchat/rocket.chat:4.8.7
+    platform: linux/amd64
+    restart: unless-stopped
+    environment:
+      # MongoDB Connection
+      - MONGO_URL=mongodb://mongo:27017/rocketchat?replicaSet=rs0
+      - MONGO_OPLOG_URL=mongodb://mongo:27017/local?replicaSet=rs0
+      
+      # Site Settings
+      - ROOT_URL=http://localhost:3100
+      - PORT=3000
+      
+      # Allow iframe embedding for Space integration
+      - Accounts_iframe_enabled=true
+      - Iframe_Integration_send_enable=true
+      - Iframe_Integration_receive_enable=true
+      - API_Enable_CORS=true
+      
+    depends_on:
+      mongo:
+        condition: service_healthy
+    ports:
+      - "3100:3000"
+    volumes:
+      - rocketchat_uploads:/app/uploads
+
+  mongo:
+    image: mongo:4.4
+    platform: linux/amd64
+    restart: unless-stopped
+    command: mongod --replSet rs0 --oplogSize 128
+    healthcheck:
+      test: echo 'rs.status().ok || rs.initiate().ok' | mongo --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    volumes:
+      - rocketchat_mongo:/data/db
+      - rocketchat_mongo_configdb:/data/configdb
+
+volumes:
+  rocketchat_uploads:
+  rocketchat_mongo:
+  rocketchat_mongo_configdb:
