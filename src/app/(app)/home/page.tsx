@@ -12,6 +12,7 @@ import { GmailWidget } from '@/components/home/gmail-widget'
 import { LinearWidget } from '@/components/home/linear-widget'
 import { InsightsWidget } from '@/components/home/insights-widget'
 import { ApprovalsWidget } from '@/components/home/approvals-widget'
+import { QuickActions } from '@/components/home/quick-actions'
 import { HomeWrapper } from '@/components/home/home-wrapper'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -138,23 +139,7 @@ export default async function HomePage() {
               <Zap className="w-5 h-5 text-primary" />
               <h3 className="text-sm font-semibold text-foreground">Quick Actions</h3>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {[
-                { icon: '📝', label: 'Remote Request', href: '#' },
-                { icon: '💬', label: 'New Message', href: '/messages' },
-                { icon: '👥', label: 'Directory', href: '/directory' },
-                { icon: '⚙️', label: 'Settings', href: '/settings' },
-              ].map((action) => (
-                <Link
-                  key={action.label}
-                  href={action.href}
-                  className="flex flex-col items-center gap-2 p-4 rounded-xl bg-secondary hover:bg-secondary/80 transition-colors text-center"
-                >
-                  <span className="text-xl">{action.icon}</span>
-                  <span className="text-xs font-medium text-muted-foreground">{action.label}</span>
-                </Link>
-              ))}
-            </div>
+            <QuickActions />
           </div>
         </div>
 

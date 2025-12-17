@@ -19,8 +19,10 @@ import {
   Plug,
   Sparkles,
   Shield,
-  BarChart3
+  BarChart3,
+  Zap
 } from 'lucide-react'
+import { ThemeToggle } from '@/components/theme-toggle'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -41,6 +43,7 @@ interface AppShellProps {
 
 const mainNav = [
   { name: 'Home', href: '/home', icon: Home },
+  { name: 'Actions', href: '/actions', icon: Zap },
   { name: 'DOO Chat', href: '/messages', icon: MessageSquare },
   { name: 'Insights', href: '/insights', icon: BarChart3 },
   { name: 'Directory', href: '/directory', icon: Users },
@@ -258,6 +261,7 @@ export function AppShell({ profile, children }: AppShellProps) {
           </div>
 
           <div className="flex items-center gap-2">
+            <ThemeToggle />
             <Button 
               variant="ghost" 
               size="icon" 
